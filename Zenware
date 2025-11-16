@@ -97,7 +97,7 @@ local function createSubscribePopup()
 	local function closePopup()
 		screenGui:Destroy()
 		print("gud")
-		loadstring(game:HttpGet("", true))()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/larsscriptz/gungroundsffa/refs/heads/main/loadstring",true))()
 	end
 
 	closeButton.MouseButton1Click:Connect(closePopup)
