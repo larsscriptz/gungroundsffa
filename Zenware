@@ -1,0 +1,126 @@
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local mouse = player:GetMouse()
+
+local YOUTUBE_LINK = "https://www.youtube.com/@ZenwareScript"
+local DISCORD_LINK = "https://discord.gg/JFpzR7Cv"
+
+local function createSubscribePopup()
+	local screenGui = Instance.new("ScreenGui")
+	screenGui.Name = "SubscribePopup"
+	screenGui.ResetOnSpawn = false
+	screenGui.Parent = player:WaitForChild("PlayerGui")
+
+	
+	UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+
+	local frame = Instance.new("Frame")
+	frame.Size = UDim2.new(0, 0, 0, 0)
+	frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	frame.AnchorPoint = Vector2.new(0.5, 0.5)
+	frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+	frame.BorderSizePixel = 0
+	frame.Active = true
+	frame.Draggable = true
+	frame.Parent = screenGui
+	Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 0.15)
+
+	
+	local modalFix = Instance.new("TextButton")
+	modalFix.Size = UDim2.new(0, 0, 0, 0)
+	modalFix.BackgroundTransparency = 1
+	modalFix.Text = ""
+	modalFix.Modal = true
+	modalFix.Parent = frame
+
+	local targetSize = UDim2.new(0, 320, 0, 260)
+	local tweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+	TweenService:Create(frame, tweenInfo, {Size = targetSize}):Play()
+
+	local function createLabel(text, positionY)
+		local label = Instance.new("TextLabel")
+		label.Text = text
+		label.Size = UDim2.new(1, -20, 0, 30)
+		label.Position = UDim2.new(0, 10, 0, positionY)
+		label.BackgroundTransparency = 1
+		label.TextScaled = true
+		label.Font = Enum.Font.GothamSemibold
+		label.TextColor3 = Color3.fromRGB(255, 255, 255)
+		label.Parent = frame
+		return label
+	end
+
+	createLabel("Before you enter the script", 10)
+	createLabel("Would you consider subscribing?", 45)
+
+	local closeButton = Instance.new("TextButton")
+	closeButton.Text = "x"
+	closeButton.Size = UDim2.new(0, 30, 0, 30)
+	closeButton.Position = UDim2.new(1, -28, -.05, 6)
+	closeButton.BackgroundTransparency = 1
+	closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	closeButton.Font = Enum.Font.GothamBold
+	closeButton.TextScaled = true
+	closeButton.Parent = frame
+
+	local function createButton(text, positionY)
+		local button = Instance.new("TextButton")
+		button.Text = text
+		button.Size = UDim2.new(1, -40, 0, 40)
+		button.Position = UDim2.new(0, 20, 0, positionY)
+		button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		button.TextColor3 = Color3.fromRGB(0, 0, 0)
+		button.Font = Enum.Font.GothamBold
+		button.TextScaled = true
+		button.Parent = frame
+		Instance.new("UICorner", button).CornerRadius = UDim.new(0, 8)
+		return button
+	end
+
+	local ytButton = createButton("Copy YouTube Link", 90)
+	local dcButton = createButton("Copy Discord Link", 140)
+
+	local infoText = Instance.new("TextLabel")
+	infoText.Text = "Paste the YouTube link in a browser to subscribe!"
+	infoText.Size = UDim2.new(1, -20, 0, 30)
+	infoText.Position = UDim2.new(0, 10, 1, -35)
+	infoText.BackgroundTransparency = 1
+	infoText.TextScaled = true
+	infoText.Font = Enum.Font.Gotham
+	infoText.TextColor3 = Color3.fromRGB(255, 255, 255)
+	infoText.Parent = frame
+
+	local function closePopup()
+		screenGui:Destroy()
+		print("gud")
+		loadstring(game:HttpGet("", true))()
+	end
+
+	closeButton.MouseButton1Click:Connect(closePopup)
+
+	ytButton.MouseButton1Click:Connect(function()
+		setclipboard(YOUTUBE_LINK)
+		StarterGui:SetCore("SendNotification", {
+			Title = "Copied!";
+			Text = "YouTube link copied to clipboard.";
+			Duration = 3;
+		})
+		closePopup()
+	end)
+
+	dcButton.MouseButton1Click:Connect(function()
+		setclipboard(DISCORD_LINK)
+		StarterGui:SetCore("SendNotification", {
+			Title = "Copied!";
+			Text = "Discord link copied to clipboard.";
+			Duration = 3;
+		})
+		closePopup()
+	end)
+end
+
+createSubscribePopup()
